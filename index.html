@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEAST x XPERT SENSI - AI Generator (Simple)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@google/genai@0.2.1/dist/index.umd.js"></script>
+    <style>
+        /* Your Existing/Basic CSS Styles */
+        body { font-family: sans-serif; background-color: #1e1e2f; color: #f0f0f0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #2a2a44; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+        h1 { text-align: center; color: #ff5722; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #ccc; margin-bottom: 25px; font-size: 1.1em; }
+        label { display: block; margin-bottom: 8px; color: #ff5722; font-weight: bold; }
+        select, button { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: none; font-size: 16px; box-sizing: border-box; }
+        select { background-color: #3b3b5b; color: white; appearance: none; cursor: pointer; }
+        button { background-color: #ff5722; color: white; cursor: pointer; font-weight: bold; transition: background-color 0.2s; }
+        button:hover:not(:disabled) { background-color: #e64a19; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+        .result, .error { padding: 20px; border-radius: 8px; margin-top: 20px; white-space: pre-wrap; font-size: 0.95em; line-height: 1.6; }
+        .error { background-color: #d32f2f; color: white; border-left: 5px solid #ff5722; }
+        .result { background-color: #3b3b5b; color: #e0e0e0; border-left: 5px solid #4caf50; }
+        #result-area { display: none; } /* Initially hidden */
+        #message-area { display: none; } /* Initially hidden */
+        .secure-warning { color: yellow; background-color: #333; padding: 10px; border-radius: 5px; text-align: center; font-size: 0.8em; margin-bottom: 20px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BEAST x XPERT SENSI</h1>
+        <p class="subtitle">Instantly Craft Your Perfect Sensitivity using AI</p>
+
+        <div class="secure-warning">
+            ⚠️ **SECURITY WARNING:** This code exposes your API key. Use the secure serverless function method for a live site.
+        </div>
+
+        <div id="settings-form">
+            <label for="brand">1. Select Brand</label>
+            <select id="brand" name="brand">
+                <option value="Apple (iOS)">Apple (iOS)</option>
+                <option value="Samsung (Android)">Samsung (Android)</option>
+                <option value="Xiaomi (Android)">Xiaomi (Android)</option>
+            </select>
+
+            <label for="model">2. Select Model</label>
+            <select id="model" name="model">
+                <option value="iPhone 15 Pro Max">iPhone 15 Pro Max</option>
+                <option value="iPhone SE (3rd gen)">iPhone SE (3rd gen)</option>
+                <option value="Samsung Galaxy S24 Ultra">Samsung Galaxy S24 Ultra</option>
+                <option value="Xiaomi Redmi Note 13">Xiaomi Redmi Note 13</option>
+            </select>
+
+            <button id="generate-button">Generate My Sensi</button>
+        </div>
+
+        <div id="message-area" class="error"></div>
+        <div id="result-area" class="result"></div>
+
+        <h2>How to Use Your AI Settings</h2>
+        <p>Follow the generated settings precisely. AI settings are optimized for professional performance and may require minor personal tweaks.</p>
+    </div>
+
+    <script>
+        // CRITICAL: Replace 'YOUR_GEMINI_API_KEY_HERE' with your actual key.
+        // The user provided key: 'AIzaSyCaW9niUQwOnhjDv32u7KTZF53ayWL3z-4'
+        // This is extremely insecure for public use.
+        const API_KEY = 'AIzaSyCaW9niUQwOnhjDv32u7KTZF53ayWL3z-4';
+
+        // Check if the SDK is loaded (it should be from the CDN script tag)
+        if (typeof GoogleGenAI === 'undefined') {
+            document.getElementById('message-area').textContent = "Error: GoogleGenAI SDK failed to load. Check your internet connection or the CDN link.";
+            document.getElementById('message-area').style.display = 'block';
+        }
+
+        // Initialize the Gemini Client with the hardcoded API key
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
+
+        document.getElementById('generate-button').addEventListener('click', generateSensi);
+
+        async function generateSensi() {
+            const button = document.getElementById('generate-button');
+            const messageArea = document.getElementById('message-area');
+            const resultArea = document.getElementById('result-area');
+            
+            // 1. Clear previous outputs and disable button
+            messageArea.style.display = 'none';
+            resultArea.style.display = 'none';
+            messageArea.textContent = '';
+            button.disabled = true;
+            button.textContent = 'Generating... Please wait.';
+
+            // 2. Get user inputs and construct the prompt
+            const brand = document.getElementById('brand').value;
+            const model = document.getElementById('model').value;
+            
+            const prompt = `Generate a detailed, pro-level, ultimate sensitivity and settings configuration for a competitive mobile shooter (like Free Fire or BGMI) for a player using a ${brand} ${model}. The output must be perfectly formatted and easy to read. Provide the following specific settings:
+- **General Sensitivity (Camera):** Red Dot, 2x Scope, 4x Scope, Sniper Scope, Free Look.
+- **DPI/Screen Settings:** Recommended DPI (if applicable to Android/device), Touch Sensitivity/Screen Refresh Rate notes.
+- **Control Layout (HUD):** A brief description of a competitive 4-finger or 5-finger claw setup (e.g., jump button top-left, fire button bottom-right).
+- **Pro Tips:** 2-3 short, crucial tips for using this specific setup.
+
+Format the output using clear headings and line breaks for readability.`;
+
+            try {
+                // 3. Call the Gemini API
+                const response = await ai.generateContent({
+                    model: "gemini-2.5-flash", // Fast and capable model
+                    contents: prompt,
+                });
+
+                const generatedText = response.text;
+
+                // 4. Display the result
+                resultArea.textContent = generatedText;
+                resultArea.style.display = 'block';
+
+            } catch (error) {
+                // 5. Display the error
+                console.error('Gemini API Error:', error);
+                let errorMessage = 'An error occurred while generating settings.';
+                
+                if (error.message.includes('API Key is invalid')) {
+                    errorMessage = 'Error: The provided API Key is invalid or has expired. Please check the key in the index.html file.';
+                } else if (error.message.includes('400')) {
+                    errorMessage = 'Error: Bad request to the API. Check the prompt format.';
+                } else {
+                    errorMessage = `Error: ${error.message}`;
+                }
+
+                messageArea.textContent = errorMessage;
+                messageArea.style.display = 'block';
+
+            } finally {
+                // 6. Re-enable the button
+                button.disabled = false;
+                button.textContent = 'Generate My Sensi';
+            }
+        }
+    </script>
+</body>
+</html>
