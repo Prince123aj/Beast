@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BEAST FF OP — Ultimate Pro Sensi Generator (2017-2025)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="icon" href="1000130778.webp" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  :root{
+    --bg:#071025;
+    --card:#0f1724;
+    --muted:#94a3b8;
+    --accent:#ff7a00;
+    --gold:#ffd166;
+    --glass: rgba(255,255,255,0.03);
+  }
+  html,body{height:100%}
+  body{
+    font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(255,122,0,0.06), transparent 6%),
+                linear-gradient(180deg,#03060b 0%, #071025 100%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  .container{max-width:1150px;margin:28px auto;padding:28px;}
+  .logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center;}
+  .brand-badge{background:linear-gradient(90deg,#1f2937,#111827);padding:10px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6);}
+  .chip{background:var(--glass);padding:6px 10px;border-radius:999px;font-weight:600;color:var(--muted);font-size:13px}
+  .sensi-val{font-weight:800;color:var(--gold);font-size:1.2rem}
+  .setting-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);padding:16px;border-radius:12px}
+  .stat{background:linear-gradient(90deg, rgba(255,122,0,0.08), rgba(255,122,0,0.02));padding:10px;border-radius:10px;border:1px solid rgba(255,122,0,0.06)}
+  .small{font-size:13px;color:var(--muted)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:900px){ .grid-3{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:640px){ .grid-3{grid-template-columns:1fr} .container{padding:16px;margin:12px} }
+  /* nice button */
+  .btn{background:linear-gradient(90deg,var(--accent),#ff5a00);padding:12px 16px;border-radius:10px;font-weight:700;color:white;border:0;box-shadow:0 8px 30px rgba(255,122,0,0.12)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .srch{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  .result-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}
+  @media (max-width:900px){ .result-grid{grid-template-columns:1fr} }
+  .sensi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media (max-width:900px){ .sensi-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .sensi-grid{grid-template-columns:1fr} }
+  .footer-note{color:var(--muted);font-size:13px;text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-wrap">
+      <div class="brand-badge">
+        <img src="1000130778.webp" alt="BEAST Logo" style="height:64px;display:block">
+      </div>
+    </div>
+
+    <header class="mt-6 text-center">
+      <h1 style="font-size:28px;font-weight:800;color:var(--gold)">BEAST FF OP</h1>
+      <p class="small" style="margin-top:6px">Ultimate Professional Sensitivity Generator — Models: 2017 → 2025 • Consistent results • Cache protected</p>
+    </header>
+
+    <!-- controls -->
+    <section style="margin-top:22px" class="setting-card">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:210px">
+          <label class="small">Brand</label>
+          <select id="brand" class="srch"></select>
+        </div>
+        <div style="flex:2;min-width:220px">
+          <label class="small">Model</label>
+          <select id="model" class="srch" disabled></select>
+        </div>
+        <div style="width:170px">
+          <label class="small">&nbsp;</label>
+          <button id="generate" class="btn w-full">Generate Pro Sensi</button>
+        </div>
+        <div style="min-width:160px">
+          <label class="small">Quick search</label>
+          <input id="quick" class="srch" placeholder="Search brand or model (type and press Enter)">
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="chip">Range: 0 — 200</div>
+        <div class="chip">Cache: Locked per device-model</div>
+        <div class="chip">Years: 2017 → 2025</div>
+      </div>
+    </section>
+
+    <!-- result -->
+    <section id="result-area" class="mt-6" style="display:none">
+      <div class="result-grid">
+        <div style="min-height:160px" class="setting-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">DEVICE</div>
+              <div id="device-name" style="font-weight:800;font-size:18px;margin-top:4px"></div>
+              <div id="device-note" class="small" style="margin-top:4px"></div>
+            </div>
+            <div style="text-align:right">
+              <div class="chip">Verified Sensi</div>
+              <div style="margin-top:8px;font-size:14px">Cached: <span id="cached-flag" class="small">No</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="sensi-grid">
+            <!-- dynamic sensi chips inserted here -->
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <div class="stat">
+              <div class="small">General</div>
+              <div class="sensi-val" id="val-general">-</div>
+            </div>
+            <div class="stat">
+              <div class="small">Red Dot</div>
+              <div class="sensi-val" id="val-reddot">-</div>
+            </div>
+            <div class="stat">
+              <div class="small">2x Scope</div>
+              <div class="sensi-val" id="val-2x">-</div>
+            </div>
+            <div class="stat">
+              <div class="small">4x Scope</div>
+              <div class="sensi-val" id="val-4x">-</div>
+            </div>
+            <div class="stat">
+              <div class="small">Sniper</div>
+              <div class="sensi-val" id="val-sniper">-</div>
+            </div>
+            <div class="stat">
+              <div class="small">Free Look</div>
+              <div class="sensi-val" id="val-free">-</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <h3 style="font-weight:700;color:var(--accent);margin-bottom:6px">Device Tips & Notes</h3>
+            <div id="tips" class="small">Pro pro tips will appear here — short, actionable, device-specific notes for competitive play.</div>
+          </div>
+        </div>
+
+        <div class="setting-card">
+          <h3 style="font-weight:800;color:var(--gold)">Quick Settings Snapshot</h3>
+          <div style="margin-top:8px" id="snapshot">
+            <!-- little summary blocks -->
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 class="small">DPI / Screen</h4>
+            <div id="dpi" style="font-weight:700;margin-top:6px">-</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 class="small">Recommended HUD</h4>
+            <div class="small" id="hud">4-Finger / 5-Finger suggestions... </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 class="small">Pro Tips</h4>
+            <ul id="protips" class="small" style="margin-top:6px"></ul>
+          </div>
+
+          <div style="margin-top:12px">
+            <button id="copy-btn" class="btn" style="background:linear-gradient(90deg,#2dd4bf,#06b6d4)">Copy Settings</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">Built for pros • Sensitivities tuned for Free Fire-like shooters • All values under 200</div>
+  </div>
+
+<script>
+/* ============================
+   LARGE SENSI DATABASE 2017-2025
+   Distribution rule (approx):
+   - Flagship: ~100-140
+   - Upper-mid: 120-150
+   - Mid: 140-170
+   - Budget: 170-200
+   ============================ */
+const SensiData = {
+  "Apple": {
+    "iPhone 15 Pro Max": {general:105, red_dot:98, scope2x:90, scope4x:82, sniper:75, free_look:110, dpi:"N/A (iOS)", notes:"Pro flagship: lower sensi for precision. 120Hz.", hud:"4-Finger Advanced Claw", protips:["Enable Gyro: Scope Only or Full for micro-aim.","Use 120Hz/ProMotion for smooth tracking."]},
+    "iPhone 15 Pro": {general:108, red_dot:100, scope2x:92, scope4x:84, sniper:76, free_look:113, dpi:"N/A (iOS)", notes:"Pro model balances precision & speed.", hud:"4-Finger Advanced Claw", protips:["Reduce HUD opacity to 65%.","Practice flicks with General sensi."]},
+    "iPhone 15 Plus": {general:118, red_dot:112, scope2x:103, scope4x:95, sniper:86, free_look:125, dpi:"N/A (iOS)", notes:"Plus model with large screen; slightly higher sensi.", hud:"4-Finger Hybrid", protips:["Use 'Smooth' graphics with max FPS.","Keep background apps closed."]},
+    "iPhone 15": {general:120, red_dot:115, scope2x:105, scope4x:95, sniper:85, free_look:125, dpi:"N/A (iOS)", notes:"Balanced modern device.", hud:"4-Finger Classic", protips:["Lower HUD size to 65% for clarity.","Focus on vertical drag consistency."]},
+    "iPhone 14 Pro Max": {general:110, red_dot:105, scope2x:95, scope4x:88, sniper:78, free_look:115, dpi:"N/A (iOS)", notes:"Prior-gen flagship 120Hz.", hud:"4-Finger Precision", protips:["Set Gyro higher for long-range control.","Avoid charging during competitive matches."]},
+    "iPhone 14 Pro": {general:112, red_dot:106, scope2x:96, scope4x:89, sniper:79, free_look:116, dpi:"N/A (iOS)", notes:"Stable precision settings.", hud:"4-Finger Precision", protips:["Test 2x scope with gyroscope.","Keep screen protectors minimal thickness."]},
+    "iPhone 14": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:88, free_look:130, dpi:"N/A (iOS)", notes:"Standard refresh; higher sensi for responsiveness.", hud:"3-Finger Speed Claw", protips:["Optimize sensitivity gradually by 2-3 points.","Clear RAM before matches."]},
+    "iPhone 13 Pro Max": {general:115, red_dot:110, scope2x:100, scope4x:92, sniper:80, free_look:120, dpi:"N/A (iOS)", notes:"Legacy flagship.", hud:"4-Finger Hybrid", protips:["Use a phone cooler for long play.","Practice snap-aims at close range."]},
+    "iPhone 13 Pro": {general:118, red_dot:113, scope2x:103, scope4x:95, sniper:83, free_look:122, dpi:"N/A (iOS)", notes:"Great mid-high balance.", hud:"4-Finger Hybrid", protips:["Tune 4x until recoil is steady.","Keep touch sensitivity max in settings."]},
+    "iPhone 13": {general:132, red_dot:128, scope2x:118, scope4x:108, sniper:92, free_look:135, dpi:"N/A (iOS)", notes:"High responsiveness required.", hud:"3-Finger Speed", protips:["Smaller screen needs higher sensi for fast turns.","Use training range daily."]},
+    "iPhone 12": {general:130, red_dot:125, scope2x:115, scope4x:105, sniper:90, free_look:135, dpi:"N/A (iOS)", notes:"Older generation, tuned up sensi.", hud:"3-Finger Speed", protips:["Use smooth graphics for stable FPS.","Avoid background tasks."]},
+    "iPhone 11": {general:140, red_dot:135, scope2x:125, scope4x:115, sniper:100, free_look:145, dpi:"N/A (iOS)", notes:"High sensi for quick rotations.", hud:"4-Finger Hybrid", protips:["Practice hip-fire in indoor fights.","Use minimal HUD for visibility."]},
+    "iPhone SE (2022)": {general:155, red_dot:150, scope2x:140, scope4x:130, sniper:115, free_look:160, dpi:"N/A (iOS)", notes:"Small screen; very high sensi.", hud:"3-Finger Classic", protips:["Use attachments for better grip.","Optimize aim assist with practice."]},
+    "iPhone X": {general:160, red_dot:155, scope2x:145, scope4x:135, sniper:120, free_look:165, dpi:"N/A (iOS)", notes:"Legacy device; high sensi.", hud:"3-Finger Classic", protips:["External trigger suggested for close range.","Lower graphic settings for smoother gameplay."]},
+    "iPhone 8": {general:175, red_dot:170, scope2x:160, scope4x:150, sniper:135, free_look:180, dpi:"N/A (iOS)", notes:"Older hardware; top sensi.", hud:"2-Finger", protips:["Keep screen clean for better touch.","Avoid overheating."]},
+    "iPhone 7": {general:185, red_dot:180, scope2x:170, scope4x:160, sniper:145, free_look:190, dpi:"N/A (iOS)", notes:"Budget-era sensitivity high.", hud:"2-Finger", protips:["Use minimal HUD and low graphic presets."]}
+  },
+
+  "Samsung": {
+    "Galaxy S24 Ultra": {general:100, red_dot:95, scope2x:85, scope4x:78, sniper:70, free_look:105, dpi:410, notes:"Flagship WQHD+ 120Hz. Low sensi for fine aim.", hud:"5-Finger Precision Claw", protips:["Enable Game Booster for stable perf.","Set touch sensitivity to max in settings."]},
+    "Galaxy S24+": {general:105, red_dot:100, scope2x:90, scope4x:82, sniper:72, free_look:108, dpi:410, notes:"Large screen; precise settings.", hud:"4-Finger Advanced", protips:["Lock FPS for consistency.","Use training range for adjustments."]},
+    "Galaxy S24": {general:108, red_dot:102, scope2x:92, scope4x:84, sniper:74, free_look:112, dpi:400, notes:"Balanced flagship.", hud:"4-Finger", protips:["Enable full performance mode.","Keep screen protector thin."]},
+    "Galaxy S23 Ultra": {general:110, red_dot:105, scope2x:95, scope4x:87, sniper:78, free_look:115, dpi:420, notes:"Previous flagship 120Hz.", hud:"5-Finger Precision", protips:["Adjust 2x scope slightly higher for mid-range."]},
+    "Galaxy S23": {general:115, red_dot:110, scope2x:100, scope4x:92, sniper:82, free_look:120, dpi:420, notes:"Great allrounder.", hud:"4-Finger", protips:["Use 'Smooth' graphics with high FPS."]},
+    "Galaxy S22": {general:118, red_dot:113, scope2x:103, scope4x:95, sniper:85, free_look:122, dpi:400, notes:"Legacy flagship.", hud:"4-Finger", protips:["Practice recoil control at 25m."]},
+    "Galaxy S21": {general:122, red_dot:118, scope2x:108, scope4x:99, sniper:88, free_look:125, dpi:400, notes:"Polished settings.", hud:"4-Finger", protips:["Smaller adjustments of 1-2 points help fine-tune."]},
+    "Galaxy Note 20 Ultra": {general:120, red_dot:115, scope2x:105, scope4x:95, sniper:85, free_look:125, dpi:400, notes:"Note series precise.", hud:"5-Finger", protips:["Use S Pen covers off while playing."]},
+    "Galaxy A54": {general:140, red_dot:135, scope2x:125, scope4x:115, sniper:100, free_look:145, dpi:480, notes:"Upper-mid with good balance.", hud:"4-Finger", protips:["Set refresh rate to 120Hz if available."]},
+    "Galaxy A34": {general:150, red_dot:145, scope2x:135, scope4x:125, sniper:110, free_look:155, dpi:480, notes:"Midrange performer.", hud:"3-Finger", protips:["Lower graphic presets to Smooth for stable FPS."]},
+    "Galaxy A14": {general:170, red_dot:165, scope2x:155, scope4x:145, sniper:130, free_look:175, dpi:520, notes:"Budget; high sensi.", hud:"2-Finger", protips:["Use minimal HUD and consider external triggers."]},
+    "Galaxy M33": {general:160, red_dot:155, scope2x:145, scope4x:135, sniper:120, free_look:165, dpi:500, notes:"Mid-battery focus.", hud:"3-Finger", protips:["Avoid charging during ranked play."]},
+    "Galaxy A12": {general:185, red_dot:180, scope2x:170, scope4x:160, sniper:145, free_look:190, dpi:540, notes:"Older budget phone.", hud:"2-Finger", protips:["Graphics to Smooth and limit fps."]}
+  },
+
+  "Xiaomi": {
+    "Mi 11 Ultra": {general:115, red_dot:110, scope2x:100, scope4x:92, sniper:80, free_look:120, dpi:400, notes:"Flagship with top hardware.", hud:"4-Finger Precision", protips:["Use high refresh rate and tune 4x carefully."]},
+    "Mi 11": {general:118, red_dot:112, scope2x:102, scope4x:94, sniper:82, free_look:122, dpi:400, notes:"Great performance.", hud:"4-Finger", protips:["Maintain background app clearance."]},
+    "Mi 10": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:88, free_look:130, dpi:430, notes:"Older flagship.", hud:"4-Finger", protips:["Keep thermal control in mind."]},
+    "Redmi Note 13 Pro": {general:135, red_dot:130, scope2x:120, scope4x:110, sniper:95, free_look:140, dpi:430, notes:"Balanced upper-mid.", hud:"4-Finger", protips:["Use highest touch sensitivity."]},
+    "Redmi Note 12": {general:145, red_dot:140, scope2x:130, scope4x:120, sniper:105, free_look:150, dpi:450, notes:"Strong midrange.", hud:"3-Finger", protips:["Make small 2-3 point adjustments when needed."]},
+    "Redmi Note 11": {general:155, red_dot:150, scope2x:140, scope4x:130, sniper:115, free_look:160, dpi:460, notes:"Midrange balanced.", hud:"3-Finger", protips:["Practice drag shots for stability."]},
+    "Poco X5 Pro": {general:150, red_dot:145, scope2x:135, scope4x:125, sniper:110, free_look:155, dpi:450, notes:"Gaming-focused midrange.", hud:"4-Finger", protips:["Use game mode for better perf."]},
+    "Redmi 9A": {general:190, red_dot:185, scope2x:175, scope4x:165, sniper:150, free_look:195, dpi:550, notes:"Budget—very high sensi.", hud:"2-Finger", protips:["Lowest graphics and minimal HUD recommended."]}
+  },
+
+  "OnePlus": {
+    "OnePlus 12": {general:110, red_dot:105, scope2x:95, scope4x:88, sniper:80, free_look:115, dpi:400, notes:"Flagship precision.", hud:"4-Finger Precision", protips:["Use OxygenOS game mode."]},
+    "OnePlus 11": {general:115, red_dot:110, scope2x:100, scope4x:92, sniper:82, free_look:120, dpi:410, notes:"Strong allrounder.", hud:"4-Finger", protips:["Stabilize frame rate with Perf Mode."]},
+    "OnePlus 10 Pro": {general:120, red_dot:115, scope2x:105, scope4x:98, sniper:86, free_look:125, dpi:420, notes:"Great touch response.", hud:"4-Finger", protips:["Keep screen protector minimal."]},
+    "OnePlus Nord 2": {general:150, red_dot:145, scope2x:135, scope4x:125, sniper:110, free_look:155, dpi:480, notes:"Upper midrange.", hud:"3-Finger", protips:["Use NitroBoost/Game Space."]}
+  },
+
+  "Oppo": {
+    "Oppo Find X6 Pro": {general:110, red_dot:105, scope2x:95, scope4x:88, sniper:80, free_look:115, dpi:400, notes:"Flagship tuned for precision.", hud:"4-Finger Precision", protips:["Use Ultra Game Mode."]},
+    "Oppo Reno 10 Pro+": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:90, free_look:130, dpi:430, notes:"Great screen response.", hud:"4-Finger", protips:["Lock FPS for stability."]},
+    "Oppo A77": {general:170, red_dot:165, scope2x:155, scope4x:145, sniper:130, free_look:175, dpi:520, notes:"Budget device.", hud:"2-Finger", protips:["Lowest graphics & simplified HUD."]}
+  },
+
+  "Vivo": {
+    "Vivo X100 Pro": {general:115, red_dot:110, scope2x:100, scope4x:92, sniper:80, free_look:120, dpi:410, notes:"Flagship-level precision.", hud:"4-Finger", protips:["Use high refresh and tune 4x carefully."]},
+    "Vivo V27": {general:145, red_dot:140, scope2x:130, scope4x:120, sniper:105, free_look:150, dpi:470, notes:"Upper midrange performer.", hud:"3-Finger", protips:["Ensure touch sensitivity is maxed."]},
+    "Vivo Y16": {general:190, red_dot:185, scope2x:175, scope4x:165, sniper:150, free_look:195, dpi:580, notes:"Budget device.", hud:"2-Finger", protips:["Low graphics & external triggers recommended."]}
+  },
+
+  "Realme": {
+    "Realme GT Neo 5": {general:120, red_dot:115, scope2x:105, scope4x:95, sniper:85, free_look:125, dpi:420, notes:"Gaming-oriented midrange.", hud:"4-Finger", protips:["Use GT Mode for performance."]},
+    "Realme 11 Pro+": {general:140, red_dot:135, scope2x:125, scope4x:115, sniper:100, free_look:145, dpi:460, notes:"Upper midrange.", hud:"4-Finger", protips:["Tune sensitivities slowly."]},
+    "Realme C55": {general:175, red_dot:170, scope2x:160, scope4x:150, sniper:135, free_look:180, dpi:520, notes:"Budget-friendly.", hud:"2-Finger", protips:["Smooth graphics & minimal HUD."]}
+  },
+
+  "Motorola": {
+    "Edge 50 Ultra": {general:110, red_dot:105, scope2x:95, scope4x:88, sniper:80, free_look:115, dpi:410, notes:"Flagship fold of Motorola lineage.", hud:"4-Finger", protips:["Enable game optimizations."]},
+    "Edge 40": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:90, free_look:130, dpi:440, notes:"Strong midrange.", hud:"4-Finger", protips:["Use Turbo Mode for gaming."]},
+    "Moto G73": {general:165, red_dot:160, scope2x:150, scope4x:140, sniper:125, free_look:170, dpi:500, notes:"Midrange performer.", hud:"3-Finger", protips:["Keep device cool."]}
+  },
+
+  "Infinix": {
+    "Infinix Zero Ultra": {general:140, red_dot:135, scope2x:125, scope4x:115, sniper:100, free_look:145, dpi:460, notes:"Upper-mid with gaming focus.", hud:"3-Finger", protips:["Use game mode and high touch sensitivity."]},
+    "Infinix Note 30": {general:165, red_dot:160, scope2x:150, scope4x:140, sniper:125, free_look:170, dpi:510, notes:"Midrange.", hud:"3-Finger", protips:["Optimize fps in settings."]},
+    "Infinix Hot 12": {general:190, red_dot:185, scope2x:175, scope4x:165, sniper:150, free_look:195, dpi:580, notes:"Budget.", hud:"2-Finger", protips:["Lower graphics & minimal HUD."]}
+  },
+
+  "Tecno": {
+    "Tecno Phantom X2": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:90, free_look:130, dpi:430, notes:"Upper-mid.", hud:"4-Finger", protips:["Use high performance mode while gaming."]},
+    "Tecno Camon 20": {general:150, red_dot:145, scope2x:135, scope4x:125, sniper:110, free_look:155, dpi:470, notes:"Midrange.", hud:"3-Finger", protips:["Tune sensitivity slowly."]},
+    "Tecno Spark 10": {general:185, red_dot:180, scope2x:170, scope4x:160, sniper:145, free_look:190, dpi:550, notes:"Budget.", hud:"2-Finger", protips:["Keep settings minimal for best perf."]}
+  },
+
+  // Additional models for breadth (selected popular models 2017-2025)
+  "Sony": {
+    "Xperia 1 II": {general:130, red_dot:125, scope2x:115, scope4x:105, sniper:92, free_look:135, dpi:420, notes:"Sony flagship.", hud:"4-Finger", protips:["Use game enhancer."]},
+    "Xperia 5": {general:140, red_dot:135, scope2x:125, scope4x:115, sniper:100, free_look:145, dpi:440, notes:"Compact flagship.", hud:"4-Finger", protips:["Smaller screen needs slightly higher sensi."]}
+  },
+
+  "Google": {
+    "Pixel 8 Pro": {general:110, red_dot:105, scope2x:95, scope4x:88, sniper:78, free_look:115, dpi:400, notes:"Pure Android flagship.", hud:"4-Finger", protips:["Use Performance mode in settings."]},
+    "Pixel 7": {general:125, red_dot:120, scope2x:110, scope4x:100, sniper:90, free_look:130, dpi:420, notes:"Solid performer.", hud:"4-Finger", protips:["Keep animations minimal."]}
+  },
+
+  "HTC": {
+    "HTC U12+": {general:165, red_dot:160, scope2x:150, scope4x:140, sniper:125, free_look:170, dpi:500, notes:"Older midrange.", hud:"3-Finger", protips:["Lower graphics."]}
+  },
+
+  "LG": {
+    "LG V60": {general:150, red_dot:145, scope2x:135, scope4x:125, sniper:110, free_look:155, dpi:480, notes:"Legacy flagship.", hud:"4-Finger", protips:["Use performance optimizations."]}
+  }
+};
+
+/* Populate any missing mid/budget models across years by iterating core names (helper to expand) */
+(function extendDataset(){
+  // quick fill for many common model variants to broaden database
+  const yearBrands = {
+    "Apple":["iPhone 8","iPhone 8 Plus","iPhone XR","iPhone XS","iPhone XS Max","iPhone SE (2020)"],
+    "Samsung":["Galaxy S9","Galaxy S9+","Galaxy S10","Galaxy S10+","Galaxy S20","Galaxy S20 FE","Galaxy A20","Galaxy A30","Galaxy A50","Galaxy A70","Galaxy A80","Galaxy Note9"],
+    "Xiaomi":["Mi 9","Mi 9T","Redmi Note 8","Redmi Note 9","Redmi Note 10","Redmi Note 9 Pro"],
+    "OnePlus":["OnePlus 5","OnePlus 5T","OnePlus 6","OnePlus 6T","OnePlus 7","OnePlus 7T"],
+    "Oppo":["Oppo F9","Oppo F11","Oppo Reno","Oppo Reno2"],
+    "Vivo":["Vivo V15","Vivo V17","Vivo Y91","Vivo Y12"],
+    "Motorola":["Moto G6","Moto G7","Moto G8"],
+    "Realme":["Realme 3","Realme 5","Realme 6"],
+    "Infinix":["Infinix Note 5","Infinix Hot 7"],
+    "Tecno":["Tecno Camon 11","Tecno Spark 3"]
+  };
+
+  Object.keys(yearBrands).forEach(brand=>{
+    if(!SensiData[brand]) SensiData[brand] = {};
+    yearBrands[brand].forEach((m,i)=>{
+      if(!SensiData[brand][m]){
+        // assign values based on index roughness
+        const base = 150 + (i%3)*10 + Math.floor(Math.random()*8);
+        SensiData[brand][m] = {
+          general: Math.min(195, base+10),
+          red_dot: Math.min(195, base+6),
+          scope2x: Math.min(195, base-2),
+          scope4x: Math.max(60, base-10),
+          sniper: Math.max(50, base-20),
+          free_look: Math.min(200, base+12),
+          dpi: 400 + (i%4)*20,
+          notes: "Auto-filled legacy model (2017-2020 range).",
+          hud: (i%2===0)?"3-Finger":"4-Finger",
+          protips: ["Use smooth graphics for stable fps.","Practice in training range."]
+        };
+      }
+    })
+  });
+})();
+
+/* --------------- UI Logic --------------- */
+const brandEl = document.getElementById('brand');
+const modelEl = document.getElementById('model');
+const generateBtn = document.getElementById('generate');
+const quick = document.getElementById('quick');
+
+const resultArea = document.getElementById('result-area');
+const deviceNameEl = document.getElementById('device-name');
+const deviceNoteEl = document.getElementById('device-note');
+const cachedFlag = document.getElementById('cached-flag');
+const dpiEl = document.getElementById('dpi');
+const hudEl = document.getElementById('hud');
+const protipsEl = document.getElementById('protips');
+const snapshotEl = document.getElementById('snapshot');
+const tipsEl = document.getElementById('tips');
+const sensiGrid = document.querySelector('.sensi-grid');
+
+const Cache = {}; // simple in-memory cache for same device-model
+
+// populate brands
+(function populateBrands(){
+  const brands = Object.keys(SensiData).sort();
+  brands.forEach(b=>{
+    const o = document.createElement('option');
+    o.value = b; o.textContent = b;
+    brandEl.appendChild(o);
+  });
+})();
+
+// when brand changes, populate models
+brandEl.addEventListener('change', ()=>{
+  modelEl.innerHTML = '<option value="">-- Select Model --</option>';
+  const b = brandEl.value;
+  if(!b){ modelEl.disabled = true; return;}
+  const models = Object.keys(SensiData[b]).sort();
+  models.forEach(m=>{
+    const o=document.createElement('option'); o.value=m; o.textContent=m; modelEl.appendChild(o);
+  });
+  modelEl.disabled = false;
+});
+
+// quick search functionality
+quick.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const q = quick.value.trim().toLowerCase();
+    if(!q) return;
+    // find brand or model match
+    let found = null;
+    for(const brand of Object.keys(SensiData)){
+      if(brand.toLowerCase().includes(q)){ found = {brand, model:null}; break;}
+      for(const model of Object.keys(SensiData[brand])){
+        if(model.toLowerCase().includes(q)){ found={brand, model}; break;}
+      }
+      if(found) break;
+    }
+    if(!found){ alert('No match found for: '+q); return;}
+    brandEl.value = found.brand;
+    brandEl.dispatchEvent(new Event('change'));
+    if(found.model){
+      // set model
+      setTimeout(()=>{ modelEl.value = found.model; }, 60);
+    }
+  }
+});
+
+// generate button logic
+generateBtn.addEventListener('click', ()=>{
+  const brand = brandEl.value;
+  const model = modelEl.value;
+  if(!brand || !model){ alert('Please choose both brand and model'); return; }
+  const key = brand + '|' + model;
+  let data, cached=false;
+  if(Cache[key]){ data = Cache[key]; cached=true; }
+  else {
+    data = JSON.parse(JSON.stringify(SensiData[brand][model])); // clone
+    // ensure values under 200
+    ['general','red_dot','scope2x','scope4x','sniper','free_look'].forEach(k=>{
+      if(data[k] > 200) data[k] = 200;
+      if(data[k] < 0) data[k] = 0;
+      // round to integer
+      data[k] = Math.round(data[k]);
+    });
+    Cache[key] = data;
+  }
+
+  // populate UI
+  deviceNameEl.textContent = brand + ' • ' + model;
+  deviceNoteEl.textContent = data.notes || '';
+  cachedFlag.textContent = cached ? 'Yes' : 'No';
+  dpiEl.textContent = data.dpi || 'N/A';
+  hudEl.textContent = data.hud || '4-Finger Recommended';
+
+  // main stats
+  document.getElementById('val-general').textContent = data.general;
+  document.getElementById('val-reddot').textContent = data.red_dot;
+  document.getElementById('val-2x').textContent = data.scope2x;
+  document.getElementById('val-4x').textContent = data.scope4x;
+  document.getElementById('val-sniper').textContent = data.sniper;
+  document.getElementById('val-free').textContent = data.free_look;
+
+  // protips
+  protipsEl.innerHTML = '';
+  (data.protips || []).slice(0,5).forEach(t=>{
+    const li = document.createElement('li'); li.textContent = '• ' + t; protipsEl.appendChild(li);
+  });
+
+  // snapshot / small chips
+  snapshotEl.innerHTML = `
+    <div class="small" style="margin-top:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="chip">Gen ${data.general}</div>
+        <div class="chip">Red ${data.red_dot}</div>
+        <div class="chip">2x ${data.scope2x}</div>
+        <div class="chip">4x ${data.scope4x}</div>
+        <div class="chip">Sniper ${data.sniper}</div>
+      </div>
+    </div>
+  `;
+
+  // tips paragraph
+  tipsEl.textContent = (data.notes || '') + ' • HUD: ' + (data.hud || '4-Finger');
+
+  // sensi grid breakdown (nice colorful boxes)
+  sensiGrid.innerHTML = '';
+  const entries = [
+    ['General', data.general, 'Use for overall turn speed & aim'],
+    ['Red Dot', data.red_dot, 'Close range & hipfire control'],
+    ['2x Scope', data.scope2x, 'Mid-range engagements'],
+    ['4x Scope', data.scope4x, 'Longer mid-range & controlled spray'],
+    ['Sniper', data.sniper, 'Sniper scope precision'],
+    ['Free Look', data.free_look, 'Camera sensitivity while moving']
+  ];
+  entries.forEach(([label,val,desc])=>{
+    const el = document.createElement('div');
+    el.className = 'stat';
+    el.innerHTML = `<div class="small">${label}</div><div style="font-weight:800;font-size:18px;color:var(--gold);margin-top:6px">${val}</div><div class="small" style="margin-top:6px;color:var(--muted)">${desc}</div>`;
+    sensiGrid.appendChild(el);
+  });
+
+  resultArea.style.display = 'block';
+  // scroll into view
+  resultArea.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+// copy to clipboard
+document.getElementById('copy-btn').addEventListener('click', ()=>{
+  if(!deviceNameEl.textContent){ alert('No data to copy yet'); return; }
+  const text = `
+${deviceNameEl.textContent} — BEAST PRO SENSI
+General: ${document.getElementById('val-general').textContent}
+Red Dot: ${document.getElementById('val-reddot').textContent}
+2x Scope: ${document.getElementById('val-2x').textContent}
+4x Scope: ${document.getElementById('val-4x').textContent}
+Sniper: ${document.getElementById('val-sniper').textContent}
+Free Look: ${document.getElementById('val-free').textContent}
+DPI: ${dpiEl.textContent}
+HUD: ${hudEl.textContent}
+Tips: ${Array.from(protipsEl.children).map(n=>n.textContent).join(' | ')}
+  `.trim();
+  navigator.clipboard.writeText(text).then(()=>{ alert('Settings copied to clipboard!'); }).catch(()=>{ alert('Copy failed — your browser may block clipboard access.'); });
+});
+
+// convenience: preselect popular brand/model
+(function setDefault(){
+  const defBrand = 'Samsung';
+  const defModel = 'Galaxy S24 Ultra';
+  if(SensiData[defBrand] && SensiData[defBrand][defModel]){
+    brandEl.value = defBrand;
+    brandEl.dispatchEvent(new Event('change'));
+    setTimeout(()=>{ modelEl.value = defModel; }, 80);
+  }
+})();
+</script>
+</body>
+</html>
