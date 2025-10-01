@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeastXSensi - SensiCraft AI Settings for FF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom scrollbar with orange theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f97316; /* orange-500 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #fb923c; /* orange-400 */
+        }
+        /* Body style with gradient */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111827; /* gray-900 */
+            background-image: radial-gradient(circle at top, #1f2937, #111827);
+        }
+        /* Custom select arrow with new color */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23d1d5db" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: 1.2em;
+            padding-right: 2.5rem;
+        }
+        /* Loading spinner */
+        .loader {
+            border: 4px solid #374151; /* gray-700 */
+            border-top: 4px solid #f97316; /* orange-500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+
+    <header class="sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <a href="#" class="flex items-center gap-3 text-3xl font-bold text-white w-fit mx-auto">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L4 6V18L12 22L20 18V6L12 2Z" stroke="#fb923c" stroke-width="1.5"/>
+                    <path d="M12 11L20 6" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M12 11V22" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M12 11L4 6" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M16 4.5L12 6.5L8 4.5" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span><span class="text-orange-400">BeastX</span>Sensi</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="relative -mt-12">
+            <div class="absolute inset-x-0 top-0 h-64 -translate-y-20 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
+                <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#f97316] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
+            </div>
+
+            <section class="text-center mb-12 relative z-10">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                    Instantly Craft Your Perfect Sensitivity
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+                    Select your exact phone model and let our AI generate the ultimate pro settings for you.
+                </p>
+            </section>
+
+            <section id="sensicraft-ai" class="relative z-10 bg-gray-800/50 rounded-xl p-6 md:p-8 border border-orange-500/30 shadow-2xl shadow-orange-500/10 backdrop-blur-sm">
+                <div class="max-w-xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="device-brand" class="block text-sm font-medium text-gray-300 mb-1">1. Select Brand</label>
+                            <select id="device-brand" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">-- Choose Brand --</option>
+                            </select>
+                        </div>
+                        <div id="model-container" class="opacity-50 transition-opacity duration-300">
+                            <label for="device-model" class="block text-sm font-medium text-gray-300 mb-1">2. Select Model</label>
+                            <select id="device-model" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" disabled>
+                               <option value="">-- Choose Model --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="generate-button" class="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2" disabled>
+                        <span>Generate My Sensi</span>
+                    </button>
+                </div>
+                <div id="ai-result-container" class="mt-8 max-w-xl mx-auto text-center" style="display: none;">
+                     <div id="loader" class="mx-auto loader"></div>
+                     <div id="ai-result" class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg text-left"></div>
+                </div>
+            </section>
+        </div>
+
+        <section class="mt-20 max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8">How to Use Your <span class="text-orange-400">AI Settings</span></h2>
+            <div class="grid md:grid-cols-2 gap-8 text-gray-300">
+                 <div class="bg-gray-800/40 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-2 text-white">Understanding DPI</h3>
+                    <p class="leading-relaxed">DPI (Dots Per Inch) is your phone's core sensitivity, changed in developer settings (Android only). Higher DPI means faster screen movement. It’s crucial for quick reactions, but finding the right balance prevents over-aiming.</p>
+                </div>
+                <div class="bg-gray-800/40 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-2 text-white">In-Game Sensitivity (0-200)</h3>
+                    <p class="leading-relaxed">Free Fire's sensitivity now goes up to 200. This fine-tunes your aim. "General" is key for hip-fire and drag-headshots, while scope settings control recoil when aiming down sights (ADS).</p>
+                </div>
+                <div class="md:col-span-2 bg-gray-800/40 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-2 text-white">The Calibration Process:</h3>
+                     <ol class="list-decimal list-inside space-y-2 leading-relaxed">
+                        <li><strong>Start with the AI Settings:</strong> Input the generated DPI (if applicable) and in-game sensitivities.</li>
+                        <li><strong>Go to the Training Ground:</strong> Never test new settings in a ranked match.</li>
+                        <li><strong>Calibrate 'General':</strong> Practice drag-headshots. If your aim flies above the head, lower sensitivity by 5-10 points. If you can't flick high enough, increase it.</li>
+                        <li><strong>Fine-Tune Scopes:</strong> Spray at distant targets with each scope. The goal is a tight bullet spread. Adjust scope sensitivities until you can control the recoil smoothly.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-transparent mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500 border-t border-gray-800">
+            <p>&copy; 2024 BeastXSensi. All rights reserved.</p>
+            <p class="text-sm mt-1">Disclaimer: Settings are AI-generated recommendations. Personal preference and practice are key.</p>
+        </div>
+    </footer>
+
+    <script>
+        // NOTE: If you want all available phone models, you must update this 'phoneData' object by fetching a comprehensive list from a database or external API.
+        const phoneData = {
+            "Apple (iOS)": ["iPhone 15 Pro Max", "iPhone 15 Pro", "iPhone 15 Plus", "iPhone 15", "iPhone 14 Pro Max", "iPhone 14 Pro", "iPhone 14 Plus", "iPhone 14", "iPhone 13 Pro Max", "iPhone 13 Pro", "iPhone 13", "iPhone 13 Mini", "iPhone 12 Pro Max", "iPhone 12 Pro", "iPhone 12", "iPhone 12 Mini", "iPhone 11 Pro Max", "iPhone 11 Pro", "iPhone 11", "iPhone SE (3rd gen)", "iPhone SE (2nd gen)", "iPhone XS Max", "iPhone XS", "iPhone XR", "iPhone X", "iPhone 8 Plus", "iPhone 8"],
+            "Samsung": ["Galaxy S24 Ultra", "Galaxy S24+", "Galaxy S24", "Galaxy S23 Ultra", "Galaxy S23+", "Galaxy S23", "Galaxy S23 FE", "Galaxy S22 Ultra", "Galaxy S22+", "Galaxy S22", "Galaxy S21 Ultra", "Galaxy S21+", "Galaxy S21", "Galaxy Z Fold 5", "Galaxy Z Flip 5", "Galaxy A55", "Galaxy A54", "Galaxy A35", "Galaxy A34", "Galaxy A25", "Galaxy M55", "Galaxy M54", "Galaxy F55", "Galaxy F54"],
+            "Xiaomi": ["Xiaomi 14 Ultra", "Xiaomi 14", "Xiaomi 13T Pro", "Xiaomi 13T", "Xiaomi 13 Ultra", "Xiaomi 13 Pro", "Xiaomi 13", "Xiaomi 12T Pro", "Xiaomi 12T", "Xiaomi 12S Ultra", "Xiaomi 12 Pro", "Xiaomi 12"],
+            "Poco": ["Poco F6 Pro", "Poco F6", "Poco F5 Pro", "Poco F5", "Poco X6 Pro", "Poco X6", "Poco M6 Pro", "Poco M6", "Poco C65"],
+            "Redmi": ["Redmi Note 13 Pro+", "Redmi Note 13 Pro", "Redmi Note 13", "Redmi Note 12 Turbo", "Redmi Note 12 Pro+", "Redmi Note 12 Pro", "Redmi K70 Pro", "Redmi K70", "Redmi K60 Ultra", "Redmi K60 Pro", "Redmi K60"],
+            "Realme": ["Realme GT 5 Pro", "Realme GT 5", "Realme GT Neo 6", "Realme GT Neo 5", "Realme 12 Pro+", "Realme 12 Pro", "Realme 11 Pro+", "Realme 11 Pro", "Realme Narzo 70 Pro", "Realme Narzo 60 Pro"],
+            "OnePlus": ["OnePlus 12", "OnePlus 12R", "OnePlus 11", "OnePlus 11R", "OnePlus 10 Pro", "OnePlus 10T", "OnePlus Open", "OnePlus Nord 3", "OnePlus Nord CE 4", "OnePlus Nord CE 3"],
+            "Google": ["Pixel 8 Pro", "Pixel 8", "Pixel 7 Pro", "Pixel 7", "Pixel 7a", "Pixel 6 Pro", "Pixel 6", "Pixel 6a"],
+            "Vivo": ["Vivo X100 Pro", "Vivo X100", "Vivo X90 Pro", "Vivo V30 Pro", "Vivo V30", "Vivo T3", "Vivo T2 Pro"],
+            "iQOO": ["iQOO 12", "iQOO 11", "iQOO Neo 9 Pro", "iQOO Neo 7 Pro", "iQOO Z9", "iQOO Z7 Pro"],
+            "Oppo": ["Oppo Find X7 Ultra", "Oppo Find X6 Pro", "Oppo Reno11 Pro", "Oppo Reno11", "Oppo F25 Pro"],
+            "Asus": ["ROG Phone 8 Pro", "ROG Phone 8", "ROG Phone 7 Ultimate", "ROG Phone 7", "Zenfone 11 Ultra", "Zenfone 10"],
+            "Nothing": ["Nothing Phone (2)", "Nothing Phone (2a)", "Nothing Phone (1)"],
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const brandSelect = document.getElementById('device-brand');
+            const modelSelect = document.getElementById('device-model');
+            const modelContainer = document.getElementById('model-container');
+            const generateButton = document.getElementById('generate-button');
+            
+            Object.keys(phoneData).forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                brandSelect.appendChild(option);
+            });
+
+            brandSelect.addEventListener('change', () => {
+                const selectedBrand = brandSelect.value;
+                modelSelect.innerHTML = '<option value="">-- Choose Model --</option>';
+                generateButton.disabled = true;
+                modelSelect.disabled = true;
+                modelContainer.classList.add('opacity-50');
+
+                if (selectedBrand && phoneData[selectedBrand]) {
+                    phoneData[selectedBrand].forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model;
+                        option.textContent = model;
+                        modelSelect.appendChild(option);
+                    });
+                    modelSelect.disabled = false;
+                    modelContainer.classList.remove('opacity-50');
+                }
+            });
+
+            modelSelect.addEventListener('change', () => {
+                generateButton.disabled = modelSelect.value === "";
+            });
+
+            // Call download on page load to allow user to download the source
+            downloadFile();
+        });
+
+        // Function to create a downloadable file of the current HTML source
+        function downloadFile() {
+            const filename = "BeastXSensi_SensiCraft.html";
+            const htmlContent = document.documentElement.outerHTML;
+
+            // Create a Blob from the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            
+            // Create an invisible link element
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            
+            // Programmatically click the link to start download
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Gemini API Integration
+        const generateButton = document.getElementById('generate-button');
+        const resultContainer = document.getElementById('ai-result-container');
+        const loader = document.getElementById('loader');
+        const resultDiv = document.getElementById('ai-result');
+
+        generateButton.addEventListener('click', async () => {
+            const phoneModel = document.getElementById('device-model').value;
+            if (!phoneModel) return;
+
+            resultContainer.style.display = 'block';
+            loader.style.display = 'block';
+            resultDiv.style.display = 'none';
+            generateButton.disabled = true;
+            generateButton.classList.add('opacity-50');
+
+            const systemPrompt = `You are "SensiBot", an expert Free Fire coach specializing in device optimization.
+            
+            **CRITICAL INSTRUCTIONS:**
+            1.  The in-game sensitivity range for Free Fire is 0 to 200. You MUST generate values within this range.
+            2.  Your recommendations should be optimized for a competitive, aggressive playstyle focused on "drag-headshots".
+            3.  Analyze the user's phone model. Consider its typical screen size, refresh rate, and performance class.
+            4.  Provide a specific DPI for Android phones. For any Apple (iOS) device, the DPI MUST be "Default".
+            5.  Provide a full set of in-game sensitivities: General, Red Dot, 2x Scope, 4x Scope, AWM Scope, and Free Look.
+            6.  After the settings, provide a brief "Pro Rationale" explaining *why* you chose those settings based on the device's characteristics.
+            7.  The entire output MUST be valid HTML. Do not include markdown or any text outside the HTML structure.
+            
+            **MANDATORY HTML FORMAT:**
+            <h3 class="text-xl font-bold mb-1">Custom Profile for ${phoneModel}</h3>
+            <p class="text-sm text-gray-400 mb-4">Optimized for Pro-Level Control</p>
+            <p class="text-lg font-semibold mb-4 text-orange-400">DPI: <span class="text-white">[DPI Value or "Default"]</span></p>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between"><span>General:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+                <div class="flex justify-between"><span>Red Dot:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+                <div class="flex justify-between"><span>2x Scope:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+                <div class="flex justify-between"><span>4x Scope:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+                <div class="flex justify-between"><span>AWM Scope:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+                <div class="flex justify-between"><span>Free Look:</span><span class="font-semibold text-white">[Value 0-200]</span></div>
+            </div>
+            <p class="mt-4 text-xs text-gray-400 leading-relaxed"><strong class="text-orange-400">Pro Rationale:</strong> [Your explanation here].</p>
+            `;
+
+            const userQuery = `Generate the Free Fire sensitivity settings for a player using a "${phoneModel}".`;
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                // *** CRITICAL CHANGE FOR DETERMINISM ***
+                // Setting temperature to 0 ensures the same model and same prompt will always return the exact same result.
+                config: {
+                    temperature: 0
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    resultDiv.innerHTML = candidate.content.parts[0].text;
+                } else {
+                    resultDiv.innerHTML = `<p class="text-red-400">Sorry, the AI couldn't generate settings. The response was empty.</p>`;
+                }
+
+            } catch (error) {
+                console.error("Error fetching from Gemini API:", error);
+                resultDiv.innerHTML = `<p class="text-red-400">An error occurred while generating your settings. Please try again.</p>`;
+         
+            } finally {
+                loader.style.display = 'none';
+                resultDiv.style.display = 'block';
+                generateButton.disabled = false;
+                generateButton.classList.remove('opacity-50');
+            }
+        });
+    </script>
+
+</body>
+</html>
